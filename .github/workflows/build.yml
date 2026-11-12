@@ -1,0 +1,62 @@
+name: Compilar
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            name: Windows x64
+            binary: target/release/cripta.exe
+            artifact: cripta-windows-x64
+          - os: ubuntu-latest
+            name: Linux x64
+            binary: target/release/cripta
+            artifact: cripta-linux-x64
+
+    steps:
+      - name: Descarga el repositorio
+        uses: actions/checkout@v4
+
+      - name: Instala las dependencias de Linux
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libasound2-dev libx11-dev libxi-dev libgl1-mesa-dev
+
+      - name: Prepara Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Guarda la caché de Cargo
+        uses: Swatinem/rust-cache@v2
+
+      - name: Compila en modo release
+        run: cargo build --release
+
+      - name: Prepara el paquete
+        shell: bash
+        run: |
+          mkdir -p package
+          cp "${{ matrix.binary }}" package/
+          cp README.md package/LEEME.md
+          cp assets/OFL.txt package/
+
+      - name: Publica el artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: package/
+          if-no-files-found: error
