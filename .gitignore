@@ -1,0 +1,19 @@
+# Compilación
+/target/
+
+# Material de pruebas y capturas
+/qa/
+
+# Distribución y archivos locales
+/dist/
+/.cargo/
+/.local/
+*.zip
+
+# Guardado y registros
+cripta_save.txt
+*.log
+
+# Sistema
+.DS_Store
+Thumbs.db

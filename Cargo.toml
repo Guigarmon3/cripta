@@ -1,0 +1,15 @@
+[package]
+name = "cripta"
+version = "0.1.0"
+edition = "2021"
+description = "CRIPTA - roguelite de mazmorra pixel art, nativo y offline"
+
+[dependencies]
+macroquad = { version = "0.4", features = ["audio"] }
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
