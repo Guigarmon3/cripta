@@ -193,3 +193,13 @@ Las pruebas cubren la lógica pura y el flujo de cada piso. Además, el modo int
 - Pactos disponibles: `Pact::ALL` y `apply_pact`.
 - Teclas reasignables: `KEY_TABLE`, `key_label` y `save::KeyBinds`.
 - Capas de música y motivos vocales: `audio.rs` (`set_floor` y `set_motif`).
+
+## Descarga y compilación
+
+La versión para Windows se publica en [Releases](https://github.com/Guigarmon3/cripta/releases/latest). El workflow **Compilar** genera artefactos para Windows y Linux en cada cambio de `main` y en cada etiqueta `v*`.
+
+```bash
+cargo build --release
+```
+
+El binario queda en `target/release/cripta` (`cripta.exe` en Windows).
